@@ -11,6 +11,13 @@ Az ellenfél a lövedékkel való ütközéskor megsemmisül. A játékos az ellenfél löve
 A cél az ellenfelek lövedékeinek elkerülése, illetve azok megsemmisítése. Az ellenfél megsemmisítése esetén a játékos pontot kap.
 
 Multiplayer mód:
-Kiválasztása után csatlakozni kívánt IP-cím beírása. Ha az adott IP-n futó játék fõmenüje van megnyitva, akkor a kapcsolat megnyílik, a játék elindul.
+Kiválasztása után csatlakozni kívánt IP-cím beírása. Ha az adott IP-n futó játék fõmenüje van megnyitva, akkor a kapcsolat megnyílik, a játék elindul. Ha a kapcsolat megszakad (bármely játékos nem elérhetõ a játék indítása után) a játék megáll, hibát jelez. Gombnyomásra fõmenübe tér vissza.
 
 A játék a single módhoz hasonlóan zajlik, a cél, és szabályok azonosak, a két játékos kooperálva irtja az ellenséget. No friendly fire. Két játékos ütközése ütközése nem jár következménnyel. Amikor az egyik játékosnak elfogynak az életpontjai, akkor eltûnik a képernyõrõl, és passzívan figyeli a játék menetét. A játéknak vége, ha mindkét játékos veszített.
+
+Tesztesetek:
+1.
+Single player végigjátszása
+
+2.
+Multiplayer módban a játék indítása után valamelyik játékos leállítja a programot. (Ez az implementációban egyenértékû lesz a hálózati kapcsolat megszûnésével.)
