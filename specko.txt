@@ -1,0 +1,16 @@
+Shootemup specifikáció
+
+Indulás után fõmenü: játékmód kiválasztása.
+Két jatékmód: single, multi kiválasztása
+
+Single mód:
+A képernyõ határain belül 2D-ben mozgó játékos, függõlegesen felfelé lövedékeket indíthat. A képernyõn való mozgatást a nyíl billentyûkkel, a lövedék indítást a CTRL billentyûvel végzi.
+A képernyõn ellenfelek állandó sebességgel mozognak. Az ellenfelek is lövedéket indíthatnak, függõlegesen lefelé.
+Az ellenfél a lövedékkel való ütközéskor megsemmisül. A játékos az ellenfél lövedékeivel való ütközéskor életet veszít, az összes életpontja elveszítésekor a játékos veszít. A játékos ellenféllel való ütközéskor is életpontot veszít. Ellenfél ellenféllel való ütközése nem jár következménnyel. A játék végén a képernyõ kiáll, kiírja, hogy game over, meg a pontszámot, a játék gombnyomásra a fõmenübe lép vissza.
+
+A cél az ellenfelek lövedékeinek elkerülése, illetve azok megsemmisítése. Az ellenfél megsemmisítése esetén a játékos pontot kap.
+
+Multiplayer mód:
+Kiválasztása után csatlakozni kívánt IP-cím beírása. Ha az adott IP-n futó játék fõmenüje van megnyitva, akkor a kapcsolat megnyílik, a játék elindul.
+
+A játék a single módhoz hasonlóan zajlik, a cél, és szabályok azonosak, a két játékos kooperálva irtja az ellenséget. No friendly fire. Két játékos ütközése ütközése nem jár következménnyel. Amikor az egyik játékosnak elfogynak az életpontjai, akkor eltûnik a képernyõrõl, és passzívan figyeli a játék menetét. A játéknak vége, ha mindkét játékos veszített.
