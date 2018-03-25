@@ -1,3 +1,4 @@
+package displayed_objects;
 import java.awt.Point;
 
 abstract class Displayed{
@@ -14,10 +15,10 @@ abstract class Displayed{
 		speed[1] = y;
 	}
 	
-	protected Point step(){
+	public Point step(){
 		realCoord[0] += speed [0];
 		realCoord[1] += speed [1];
-		coordinates.setLocation((int)realCoord[0], (int)realCoord[1]);
+		coordinates.setLocation(realCoord[0], realCoord[1]);
 		
 		return coordinates;
 	}

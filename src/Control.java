@@ -3,11 +3,16 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import displayed_objects.Enemy;
+import displayed_objects.Player;
+import displayed_objects.Projectile;
+
 public class Control {
 	
 	protected ArrayList<Player> players;
 	protected ArrayList<Enemy> enemies;
-	protected ArrayList<Projectile> projectiles;
+	protected ArrayList<Projectile> plProjectiles;
+	protected ArrayList<Projectile> enProjectiles;
 	private Timer tim;
 	private Gui gui;
 	private Network net;
@@ -23,7 +28,8 @@ public class Control {
 
 		players = new ArrayList<>();
 		enemies = new ArrayList<>();
-		projectiles = new ArrayList<>();
+		plProjectiles = new ArrayList<>();
+		enProjectiles = new ArrayList<>();
 		
 		tim = new Timer();
 		tim.scheduleAtFixedRate(new TimerTask() {
@@ -41,7 +47,11 @@ public class Control {
 		Point checkCoord;
 		
 		for (int i=0; i<players.size(); i++){
-			checkCoord = players.get(i).step();
+			checkCoord = players.get(i).stepLook();
+			if(gui.OutOfBounds(checkCoord)){}
+			else{
+				players.get(i).setLoc(checkCoord);
+			}
 		}
 		
 		for (int i=0; i<enemies.size(); i++){
@@ -51,15 +61,54 @@ public class Control {
 			}
 		}
 		
-		for (int i=0; i<projectiles.size(); i++){
-			checkCoord = projectiles.get(i).step();
+		for (int i=0; i<plProjectiles.size(); i++){
+			checkCoord = plProjectiles.get(i).step();
 			if(gui.OutOfBounds(checkCoord)){
-				projectiles.remove(i);
+				plProjectiles.remove(i);
+			}
+		}
+		
+		for (int i=0; i<enProjectiles.size(); i++){
+			checkCoord = enProjectiles.get(i).step();
+			if(gui.OutOfBounds(checkCoord)){
+				enProjectiles.remove(i);
 			}
 		}
 	}
 	
-	private void assess(){}
+	private void assess(){
+		ArrayList<Enemy> hitEnemies = new ArrayList<Enemy>();
+		ArrayList<Projectile> hitPlProjectiles = new ArrayList<Projectile>();
+		for(int i=0; i<enemies.size(); i++){
+			for(int j=0; j<plProjectiles.size(); j++){
+				if(enemies.get(i).isHit(plProjectiles.get(j))){
+					hitPlProjectiles.add(plProjectiles.get(j));
+					int remainingHealth = enemies.get(i).hit(plProjectiles.get(j));
+					if(1 > remainingHealth){
+						hitEnemies.add(enemies.get(i));
+					}
+				}
+			}
+			enemies.removeAll(hitEnemies);
+			plProjectiles.removeAll(hitPlProjectiles);
+		}
+		
+		ArrayList<Player> hitPlayers = new ArrayList<Player>();
+		ArrayList<Projectile> hitEnProjectiles = new ArrayList<Projectile>();
+		for(int i=0; i<players.size(); i++){
+			for(int j=0; j<enProjectiles.size(); j++){
+				if(players.get(i).isHit(enProjectiles.get(j))){
+					hitEnProjectiles.add(enProjectiles.get(j));
+					int remainingHealth = players.get(i).hit(enProjectiles.get(j));
+					if(1 > remainingHealth){
+						hitEnemies.add(enemies.get(i));
+					}
+				}
+			}
+			players.removeAll(hitPlayers);
+			enProjectiles.removeAll(hitEnProjectiles);
+		}
+	}
 	private void draw(){}
 
 }
