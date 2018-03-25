@@ -75,7 +75,7 @@ public class Control {
 			}
 		}
 	}
-	
+
 	private void assess(){
 		ArrayList<Enemy> hitEnemies = new ArrayList<Enemy>();
 		ArrayList<Projectile> hitPlProjectiles = new ArrayList<Projectile>();
@@ -109,6 +109,30 @@ public class Control {
 			enProjectiles.removeAll(hitEnProjectiles);
 		}
 	}
+	
 	private void draw(){}
-
+	
+	public void addEnemy(){}
+	
+	public void playerShoots(int index){
+		if(players.size() < index){
+			return;
+		}
+		else{
+			Point p = players.get(index).getPlace();
+			Projectile proj = new Projectile(p, -5.0, 1);
+			plProjectiles.add(proj);
+		}
+	}
+	
+	public void enemyShoots(int index){
+		if(enemies.size() < index){
+			return;
+		}
+		else{
+			Point p = enemies.get(index).getPlace();
+			Projectile proj = new Projectile(p, 5.0, 1);
+			enProjectiles.add(proj);
+		}
+	}
 }

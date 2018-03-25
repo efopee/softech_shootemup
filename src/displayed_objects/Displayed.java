@@ -23,4 +23,8 @@ abstract class Displayed{
 		return coordinates;
 	}
 	
+	public Point getPlace(){
+		return coordinates;
+	}
+	
 }
