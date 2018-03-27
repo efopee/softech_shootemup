@@ -24,6 +24,10 @@ public class Control {
 		net = n;
 	}
 	
+	public void movePlayer(int dx, int dy){
+		//TODO: Ezt Dani hívja GUIból.
+	}
+	
 	Control(int msRate){
 
 		players = new ArrayList<>();
