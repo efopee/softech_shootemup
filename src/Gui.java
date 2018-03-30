@@ -20,9 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import displayed_objects.Enemy;
-import displayed_objects.Player;
-import displayed_objects.Projectile;
+import displayed_objects.*;
 
 
 public class Gui extends JFrame {
@@ -96,10 +94,7 @@ public class Gui extends JFrame {
 		gamePanel.setFocusable(true);
 
 		add(gamePanel);
-		
-		
-		gamePanel.bullets.add(new Point(100, 100));
-		gamePanel.players.add(new Point(300, 100));
+
 		gamePanel.repaint();
 		
 		
@@ -112,53 +107,62 @@ public class Gui extends JFrame {
 
 		private static final long serialVersionUID = 1L;
 		
-		private ArrayList<Point> bullets = new ArrayList<Point>();
-		private ArrayList<Point> players = new ArrayList<Point>();
-		private ArrayList<Point> enemyies = new ArrayList<Point>();
+		private ArrayList<Projectile> playerBullets = new ArrayList<Projectile>();
+		private ArrayList<Projectile> enemyBullets = new ArrayList<Projectile>();
+		private ArrayList<Player> players = new ArrayList<Player>();
+		private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		
-		
-		
-
+	
 
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			
+			g.setColor(Color.green);
+			
+			for (Projectile bullet : playerBullets){
+				int[] bulletCoordsX = {bullet.getPlace().x, bullet.getPlace().x - 4, bullet.getPlace().x + 4};
+				int[] bulletCoordsY = {bullet.getPlace().y, bullet.getPlace().y + 8, bullet.getPlace().y + 8};
+				g.fillPolygon(bulletCoordsX, bulletCoordsY, 3);
+
+			}
+			
+			for (Projectile bullet : enemyBullets){
+				int[] bulletCoordsX = {bullet.getPlace().x, bullet.getPlace().x - 4, bullet.getPlace().x + 4};
+				int[] bulletCoordsY = {bullet.getPlace().y, bullet.getPlace().y - 8, bullet.getPlace().y - 8};
+				g.fillPolygon(bulletCoordsX, bulletCoordsY, 3);
+
+			}
+			
+			for (Player player : players){
+				g.fillRect(player.getPlace().x, player.getPlace().y, 50, 5);
+			
+				
+			}
+			
 			
 		    try {
 		        Graphics2D g2D;
 		        g2D = (Graphics2D) g;
 		        g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		        String fileName = "enemy1.PNG";
-		        Image img = getToolkit().getImage(fileName);
-		        Image smallImage = img.getScaledInstance(30, -1, Image.SCALE_DEFAULT);
-		        AffineTransform aTran = new AffineTransform();
-		        aTran.translate(50.0f, 20.0f);
-		        g2D.transform(aTran);
-		        g2D.drawImage(img, 30, 30, 50, 50, this);
+		        Image img = getToolkit().getImage(fileName);;
+				
+		        for(Enemy enemy : enemies){
+			        g2D.drawImage(img, enemy.getPlace().x, enemy.getPlace().y, 50, 50, this);
+				}
 		      }
 		    
 		    catch (Exception e) {
 		    	  System.out.println("error during loading image");
 		      }
 			
-			g.setColor(Color.green);
-			
-			for (Point bullet : bullets){
-				int[] bulletCoordsX = {bullet.x, bullet.x - 4, bullet.x + 4};
-				int[] bulletCoordsY = {bullet.y, bullet.y + 8, bullet.y + 8};
-				g.fillPolygon(bulletCoordsX, bulletCoordsY, 3);
-
-			}
-			
-			for (Point player : players){
-				g.fillRect(player.x, player.y, 50, 5);
-				
-			}
 			
 			
 
 		}
 	}
+	
 	
 	
 	
@@ -179,15 +183,26 @@ public class Gui extends JFrame {
 	}
 	
 	public void drawEnemies(ArrayList<Enemy> enemies){
+		gamePanel.enemies.clear();
+		gamePanel.enemies.addAll(enemies);
+		gamePanel.repaint();
 		
 	}
 	public void drawPlayers(ArrayList<Player> players){
+		gamePanel.players.clear();
+		gamePanel.players.addAll(players);
+		gamePanel.repaint();
 		
 	}
 	public void drawPlayerProjectiles(ArrayList<Projectile> plProjectiles){
+		gamePanel.playerBullets.clear();
+		gamePanel.playerBullets.addAll(plProjectiles);
+		gamePanel.repaint();
 		
 	}
 	public void drawEnemyProjectiles(ArrayList<Projectile> enProjectiles){
-		
+		gamePanel.enemyBullets.clear();
+		gamePanel.enemyBullets.addAll(enProjectiles);
+		gamePanel.repaint();
 	}
 }
