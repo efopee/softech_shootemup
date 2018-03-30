@@ -2,6 +2,8 @@ package displayed_objects;
 import java.awt.Point;
 
 public class Player extends Killable {
+	
+	private static double speedQ = 1;
 
 	Player(Point startingPoint, int size, int health){
 		super(startingPoint, 0, 0, size, health);
@@ -10,6 +12,11 @@ public class Player extends Killable {
 	protected void setSpeed(double x, double y){
 		speed[0] = x;
 		speed[1] = y;
+	}
+	
+	public void addToSpeed(int dvx, int dvy){
+		speed[0] += dvx*speedQ;
+		speed[1] += dvy*speedQ;
 	}
 
 	public Point stepLook(){

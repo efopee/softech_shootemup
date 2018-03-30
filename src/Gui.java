@@ -67,6 +67,17 @@ public class Gui extends JFrame {
 				
 				switch (e.getKeyCode()) {
 				case 37: ctrl.movePlayer(-stepSize,0); //left
+					ctrl.playerButtons(Control.BUTTONS.LEFT, true);
+					/*
+					 * TODO 
+					 * Control.playerButtons (Control.BUTTONS whichButton, boolean isItPressed)
+					 * ***
+					 * 		Control.BUTTONS is an enum for UP, DOWN, LEFT, RIGHT, CNTRL
+					 * ***
+					 * 		isItPressed - true means the button has been pressed
+					 * 					  false means the button has been released
+					 * 					(CNTRL is only sensitive to keypress, no need to call on release)
+					 */
 					break;
 				case 38: ctrl.movePlayer(0,-stepSize); //up
 					break;

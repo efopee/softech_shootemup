@@ -9,6 +9,10 @@ import displayed_objects.Projectile;
 
 public class Control {
 	
+	public static enum BUTTONS{
+		UP, DOWN, LEFT, RIGHT, CNTRL		
+	}
+	
 	protected ArrayList<Player> players;
 	protected ArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> plProjectiles;
@@ -26,6 +30,28 @@ public class Control {
 	
 	public void movePlayer(int dx, int dy){
 		//TODO: Ezt Dani hívja GUIból.
+	}
+	
+	public void playerButtons(BUTTONS whichButton, boolean isItPressed){
+		switch(whichButton){
+		case UP:
+			players.get(0).addToSpeed(0, isItPressed? -1:1);
+			break;
+		case DOWN:
+			players.get(0).addToSpeed(0, isItPressed? 1:-1);
+			break;
+		case LEFT:
+			players.get(0).addToSpeed(isItPressed? -1:1, 0);
+			break;
+		case RIGHT:
+			players.get(0).addToSpeed(isItPressed? 1:-1, 0);
+			break;
+		case CNTRL:
+			playerShoots(0);
+			break;
+		default:
+			break;
+		}
 	}
 	
 	Control(int msRate){
