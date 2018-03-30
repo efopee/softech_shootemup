@@ -61,29 +61,27 @@ public class Gui extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				
-				int stepSize = 10;
+				/*
+				 * 
+				 * Control.playerButtons (Control.BUTTONS whichButton, boolean isItPressed)
+				 * ***
+				 * 		Control.BUTTONS is an enum for UP, DOWN, LEFT, RIGHT, CNTRL
+				 * ***
+				 * 		isItPressed - true means the button has been pressed
+				 * 					  false means the button has been released
+				 * 					(CNTRL is only sensitive to keypress, no need to call on release)
+				 */
 				
 				switch (e.getKeyCode()) {
-				case 37: ctrl.movePlayer(-stepSize,0); //left
-					ctrl.playerButtons(Control.BUTTONS.LEFT, true);
-					/*
-					 * TODO 
-					 * Control.playerButtons (Control.BUTTONS whichButton, boolean isItPressed)
-					 * ***
-					 * 		Control.BUTTONS is an enum for UP, DOWN, LEFT, RIGHT, CNTRL
-					 * ***
-					 * 		isItPressed - true means the button has been pressed
-					 * 					  false means the button has been released
-					 * 					(CNTRL is only sensitive to keypress, no need to call on release)
-					 */
+				case 37: ctrl.playerButtons(Control.BUTTONS.LEFT, true);
 					break;
-				case 38: ctrl.movePlayer(0,-stepSize); //up
+				case 38: ctrl.playerButtons(Control.BUTTONS.UP, true);
 					break;
 				
-				case 39: ctrl.movePlayer(stepSize,0); //right
+				case 39: ctrl.playerButtons(Control.BUTTONS.RIGHT, true);
 				break;
 				
-				case 40: ctrl.movePlayer(0,stepSize);//down
+				case 40: ctrl.playerButtons(Control.BUTTONS.DOWN, true);
 				break;
 
 				default:
@@ -93,6 +91,21 @@ public class Gui extends JFrame {
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {
+				switch (e.getKeyCode()) {
+				case 37: ctrl.playerButtons(Control.BUTTONS.LEFT, false);
+					break;
+				case 38: ctrl.playerButtons(Control.BUTTONS.UP, false);
+					break;
+				
+				case 39: ctrl.playerButtons(Control.BUTTONS.RIGHT, false);
+				break;
+				
+				case 40: ctrl.playerButtons(Control.BUTTONS.DOWN, false);
+				break;
+
+				default:
+					break;
+				}
 				
 				
 			}@Override
