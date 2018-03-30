@@ -52,7 +52,7 @@ public class Control {
 		
 		for (int i=0; i<players.size(); i++){
 			checkCoord = players.get(i).stepLook();
-			if(gui.OutOfBounds(checkCoord)){}
+			if(gui.outOfBounds(checkCoord)){}
 			else{
 				players.get(i).setLoc(checkCoord);
 			}
@@ -60,21 +60,21 @@ public class Control {
 		
 		for (int i=0; i<enemies.size(); i++){
 			checkCoord = enemies.get(i).step();
-			if(gui.OutOfBounds(checkCoord)){
+			if(gui.outOfBounds(checkCoord)){
 				enemies.remove(i);
 			}
 		}
 		
 		for (int i=0; i<plProjectiles.size(); i++){
 			checkCoord = plProjectiles.get(i).step();
-			if(gui.OutOfBounds(checkCoord)){
+			if(gui.outOfBounds(checkCoord)){
 				plProjectiles.remove(i);
 			}
 		}
 		
 		for (int i=0; i<enProjectiles.size(); i++){
 			checkCoord = enProjectiles.get(i).step();
-			if(gui.OutOfBounds(checkCoord)){
+			if(gui.outOfBounds(checkCoord)){
 				enProjectiles.remove(i);
 			}
 		}
@@ -114,7 +114,12 @@ public class Control {
 		}
 	}
 	
-	private void draw(){}
+	private void draw(){
+		gui.drawEnemies(enemies);
+		gui.drawEnemyProjectiles(enProjectiles);
+		gui.drawPlayerProjectiles(plProjectiles);
+		gui.drawPlayers(players);
+	}
 	
 	public void addEnemy(){}
 	

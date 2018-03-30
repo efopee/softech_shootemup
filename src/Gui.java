@@ -20,6 +20,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import displayed_objects.Enemy;
+import displayed_objects.Player;
+import displayed_objects.Projectile;
+
 
 public class Gui extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -161,7 +165,7 @@ public class Gui extends JFrame {
 	
 
 
-	public boolean OutOfBounds(Point p){
+	public boolean outOfBounds(Point p){
 		if(displayWidth < p.getX() ||
 					  0 > p.getX() ||
 		  displayHeight < p.getY() ||
@@ -172,5 +176,18 @@ public class Gui extends JFrame {
 		else{
 			return false;
 		}
+	}
+	
+	public void drawEnemies(ArrayList<Enemy> enemies){
+		
+	}
+	public void drawPlayers(ArrayList<Player> players){
+		
+	}
+	public void drawPlayerProjectiles(ArrayList<Projectile> plProjectiles){
+		
+	}
+	public void drawEnemyProjectiles(ArrayList<Projectile> enProjectiles){
+		
 	}
 }
