@@ -79,22 +79,19 @@ public class Control {
 		}
 		
 		for (int i=0; i<enemies.size(); i++){
-			checkCoord = enemies.get(i).step();
-			if(gui.outOfBounds(checkCoord)){
+			if(gui.outOfBounds(enemies.get(i).step())){
 				enemies.remove(i);
 			}
 		}
 		
 		for (int i=0; i<plProjectiles.size(); i++){
-			checkCoord = plProjectiles.get(i).step();
-			if(gui.outOfBounds(checkCoord)){
+			if(gui.outOfBounds(plProjectiles.get(i).step())){
 				plProjectiles.remove(i);
 			}
 		}
 		
 		for (int i=0; i<enProjectiles.size(); i++){
-			checkCoord = enProjectiles.get(i).step();
-			if(gui.outOfBounds(checkCoord)){
+			if(gui.outOfBounds(enProjectiles.get(i).step())){
 				enProjectiles.remove(i);
 			}
 		}
