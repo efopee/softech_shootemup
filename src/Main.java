@@ -1,3 +1,4 @@
+import java.util.Timer;
 
 public class Main {
 
@@ -6,6 +7,9 @@ public class Main {
 		Control c = new Control(1000, Control.PLAYERMODE.SINGLE, Control.CONTROLMODE.MASTER, g);
 		g.setControl(c);
 		
+		Timer tim = new Timer();
+		FrameRateTask frt = new FrameRateTask(c);
+		tim.scheduleAtFixedRate(frt, 0, 1000);
 		
 	}
 	

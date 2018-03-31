@@ -1,7 +1,5 @@
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import displayed_objects.Enemy;
 import displayed_objects.Player;
@@ -23,8 +21,6 @@ public class Control {
 	protected ArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> plProjectiles;
 	protected ArrayList<Projectile> enProjectiles;
-	private Timer tim;
-	private FrameRateTask frameTask;
 	private Gui gui;
 	private Network net;
 	
@@ -69,21 +65,6 @@ public class Control {
 		
 		setGui(g);
 		
-		tim = new Timer();
-		frameTask = new FrameRateTask();
-		tim.scheduleAtFixedRate(frameTask, null, msRate);
-	}
-	
-	public class FrameRateTask extends TimerTask {
-		
-		public FrameRateTask(){
-		}
-		@Override
-		public void run() {
-			step();
-			assess();
-			draw();
-		}
 	}
 	
 	void step(){
