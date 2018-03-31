@@ -83,7 +83,10 @@ public class Gui extends JFrame {
 				
 				case 40: ctrl.playerButtons(Control.BUTTONS.DOWN, true);
 				break;
-
+				
+				case 17: ctrl.playerButtons(Control.BUTTONS.CNTRL, true);
+				break;
+				
 				default:
 					break;
 				}
@@ -181,9 +184,6 @@ public class Gui extends JFrame {
 		    	  System.out.println("error during loading image");
 		      }
 			
-			
-			
-
 		}
 	}
 	
@@ -205,7 +205,7 @@ public class Gui extends JFrame {
 			return false;
 		}
 	}
-	
+/*	
 	public void drawEnemies(ArrayList<Enemy> enemies){
 		gamePanel.enemies.clear();
 		gamePanel.enemies.addAll(enemies);
@@ -229,4 +229,13 @@ public class Gui extends JFrame {
 		gamePanel.enemyBullets.addAll(enProjectiles);
 		gamePanel.repaint();
 	}
+	*/
+	 public void draw(ArrayList<Enemy> enemies, ArrayList<Player> players, ArrayList<Projectile> plProjectiles, ArrayList<Projectile> enProjectiles){
+		 gamePanel.enemies = enemies;
+		 gamePanel.players = players;
+		 gamePanel.enemyBullets = enProjectiles;
+		 gamePanel.playerBullets = plProjectiles;
+		 
+		 gamePanel.repaint();
+	 }
 }

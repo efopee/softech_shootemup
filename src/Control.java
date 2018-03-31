@@ -141,10 +141,7 @@ public class Control {
 	}
 	
 	private void draw(){
-		gui.drawEnemies(enemies);
-		gui.drawEnemyProjectiles(enProjectiles);
-		gui.drawPlayerProjectiles(plProjectiles);
-		gui.drawPlayers(players);
+		gui.draw(enemies, players, plProjectiles, enProjectiles);
 	}
 	
 	public void addEnemy(){}
