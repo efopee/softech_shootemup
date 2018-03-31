@@ -5,7 +5,7 @@ public class Player extends Killable {
 	
 	private static double speedQ = 1;
 
-	Player(Point startingPoint, int size, int health){
+	public Player(Point startingPoint, int size, int health){
 		super(startingPoint, 0, 0, size, health);
 	}
 

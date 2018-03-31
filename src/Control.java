@@ -12,24 +12,27 @@ public class Control {
 	public static enum BUTTONS{
 		UP, DOWN, LEFT, RIGHT, CNTRL		
 	}
+	public static enum PLAYERMODE{
+		SINGLE, MULTI
+	}
+	public static enum CONTROLMODE{
+		MASTER, SLAVE
+	}
 	
 	protected ArrayList<Player> players;
 	protected ArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> plProjectiles;
 	protected ArrayList<Projectile> enProjectiles;
 	private Timer tim;
+	private FrameRateTask frameTask;
 	private Gui gui;
 	private Network net;
 	
-	public void setGUI(Gui g){
+	public void setGui(Gui g){
 		gui = g;
 	}
 	public void setNetwork(Network n){
 		net = n;
-	}
-	
-	public void movePlayer(int dx, int dy){
-		//TODO: Ezt Dani hívja GUIból.
 	}
 	
 	public void playerButtons(BUTTONS whichButton, boolean isItPressed){
@@ -54,26 +57,36 @@ public class Control {
 		}
 	}
 	
-	Control(int msRate){
+	Control(int msRate, PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
 
 		players = new ArrayList<>();
 		enemies = new ArrayList<>();
 		plProjectiles = new ArrayList<>();
 		enProjectiles = new ArrayList<>();
 		
+		Player newPlayer = new Player(new Point(100,100), 10, 10);
+		players.add(newPlayer);
+		
+		setGui(g);
+		
 		tim = new Timer();
-		tim.scheduleAtFixedRate(new TimerTask() {
-			
-			@Override
-			public void run() {
-				step();
-				assess();
-				draw();
-			}
-		}, null, msRate);
+		frameTask = new FrameRateTask();
+		tim.scheduleAtFixedRate(frameTask, null, msRate);
 	}
 	
-	private void step(){
+	public class FrameRateTask extends TimerTask {
+		
+		public FrameRateTask(){
+		}
+		@Override
+		public void run() {
+			step();
+			assess();
+			draw();
+		}
+	}
+	
+	void step(){
 		Point checkCoord;
 		
 		for (int i=0; i<players.size(); i++){
@@ -106,7 +119,7 @@ public class Control {
 		}
 	}
 
-	private void assess(){
+	void assess(){
 		ArrayList<Enemy> hitEnemies = new ArrayList<Enemy>();
 		ArrayList<Projectile> hitPlProjectiles = new ArrayList<Projectile>();
 		for(int i=0; i<enemies.size(); i++){
@@ -140,7 +153,7 @@ public class Control {
 		}
 	}
 	
-	private void draw(){
+	void draw(){
 		gui.draw(enemies, players, plProjectiles, enProjectiles);
 	}
 	

@@ -30,6 +30,9 @@ public class Gui extends JFrame {
 	private int displayHeight = 500;
 	private Control ctrl;
 	
+	public void setControl(Control c){
+		ctrl = c;
+	}
 	
 	Gui(){
 		super("Shoot'em up!");
