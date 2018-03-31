@@ -53,7 +53,7 @@ public class Control {
 		}
 	}
 	
-	Control(int msRate, PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
+	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
 
 		players = new ArrayList<>();
 		enemies = new ArrayList<>();

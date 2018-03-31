@@ -3,7 +3,7 @@ import java.awt.Point;
 
 public class Player extends Killable {
 	
-	private static double speedQ = 1;
+	private static double speedQ = 10;
 
 	public Player(Point startingPoint, int size, int health){
 		super(startingPoint, 0, 0, size, health);
