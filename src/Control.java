@@ -1,7 +1,5 @@
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import displayed_objects.Enemy;
 import displayed_objects.Player;
@@ -12,24 +10,25 @@ public class Control {
 	public static enum BUTTONS{
 		UP, DOWN, LEFT, RIGHT, CNTRL		
 	}
+	public static enum PLAYERMODE{
+		SINGLE, MULTI
+	}
+	public static enum CONTROLMODE{
+		MASTER, SLAVE
+	}
 	
 	protected ArrayList<Player> players;
 	protected ArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> plProjectiles;
 	protected ArrayList<Projectile> enProjectiles;
-	private Timer tim;
 	private Gui gui;
 	private Network net;
 	
-	public void setGUI(Gui g){
+	public void setGui(Gui g){
 		gui = g;
 	}
 	public void setNetwork(Network n){
 		net = n;
-	}
-	
-	public void movePlayer(int dx, int dy){
-		//TODO: Ezt Dani hívja GUIból.
 	}
 	
 	public void playerButtons(BUTTONS whichButton, boolean isItPressed){
@@ -54,26 +53,21 @@ public class Control {
 		}
 	}
 	
-	Control(int msRate){
+	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
 
 		players = new ArrayList<>();
 		enemies = new ArrayList<>();
 		plProjectiles = new ArrayList<>();
 		enProjectiles = new ArrayList<>();
 		
-		tim = new Timer();
-		tim.scheduleAtFixedRate(new TimerTask() {
-			
-			@Override
-			public void run() {
-				step();
-				assess();
-				draw();
-			}
-		}, null, msRate);
+		Player newPlayer = new Player(new Point(100,100), 10, 10);
+		players.add(newPlayer);
+		
+		setGui(g);
+		
 	}
 	
-	private void step(){
+	void step(){
 		Point checkCoord;
 		
 		for (int i=0; i<players.size(); i++){
@@ -85,28 +79,25 @@ public class Control {
 		}
 		
 		for (int i=0; i<enemies.size(); i++){
-			checkCoord = enemies.get(i).step();
-			if(gui.outOfBounds(checkCoord)){
+			if(gui.outOfBounds(enemies.get(i).step())){
 				enemies.remove(i);
 			}
 		}
 		
 		for (int i=0; i<plProjectiles.size(); i++){
-			checkCoord = plProjectiles.get(i).step();
-			if(gui.outOfBounds(checkCoord)){
+			if(gui.outOfBounds(plProjectiles.get(i).step())){
 				plProjectiles.remove(i);
 			}
 		}
 		
 		for (int i=0; i<enProjectiles.size(); i++){
-			checkCoord = enProjectiles.get(i).step();
-			if(gui.outOfBounds(checkCoord)){
+			if(gui.outOfBounds(enProjectiles.get(i).step())){
 				enProjectiles.remove(i);
 			}
 		}
 	}
 
-	private void assess(){
+	void assess(){
 		ArrayList<Enemy> hitEnemies = new ArrayList<Enemy>();
 		ArrayList<Projectile> hitPlProjectiles = new ArrayList<Projectile>();
 		for(int i=0; i<enemies.size(); i++){
@@ -140,7 +131,7 @@ public class Control {
 		}
 	}
 	
-	private void draw(){
+	void draw(){
 		gui.draw(enemies, players, plProjectiles, enProjectiles);
 	}
 	
