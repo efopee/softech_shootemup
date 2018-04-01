@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -26,6 +27,7 @@ import displayed_objects.*;
 public class Gui extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private GamePanel gamePanel;
+	private UpperPanel upperPanel;
 	private int displayWidth = 600;
 	private int displayHeight = 500;
 	private Control ctrl;
@@ -55,7 +57,11 @@ public class Gui extends JFrame {
 		menuBar.add(menu);
 		setJMenuBar(menuBar);
 		
-
+		upperPanel = new UpperPanel();
+		upperPanel.setBounds(0, 0, displayWidth, 20);
+		upperPanel.score = 0;
+		upperPanel.repaint();
+		add(upperPanel);
 		
 		gamePanel = new GamePanel();
 		gamePanel.setBounds(0, 20, displayWidth, displayHeight);
@@ -130,7 +136,24 @@ public class Gui extends JFrame {
 		
 		setVisible(true);
 	}
+	
+	private class UpperPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		private int score;
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			
+		    int fontSize = 14;
 
+		    g.setFont(new Font("Arial", Font.PLAIN, fontSize));
+		     
+		    g.setColor(Color.black);
+		    
+		    g.drawString(String.format("Score: %07d", score), 490, 15); //
+		}
+	}
 	
 	
 	private class GamePanel extends JPanel {
@@ -148,7 +171,7 @@ public class Gui extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			
-			g.setColor(Color.green);
+			g.setColor(new Color(0,0,102));
 			
 			for (Projectile bullet : playerBullets){
 				int[] bulletCoordsX = {bullet.getPlace().x, bullet.getPlace().x - 4, bullet.getPlace().x + 4};
@@ -165,7 +188,15 @@ public class Gui extends JFrame {
 			}
 			
 			for (Player player : players){
-				g.fillRect(player.getPlace().x, player.getPlace().y, 50, 5);
+				int width = 44; //osztható legyen 4-el
+				int height = 24; //osztható legyen 2-vel
+				int[] coordsX = {player.getPlace().x - (width / 2), player.getPlace().x - (width/4), player.getPlace().x,
+						player.getPlace().x + (width/4), player.getPlace().x + (width / 2), player.getPlace().x + (width / 2),
+						player.getPlace().x - (width / 2)};
+				int[] coordsY = {player.getPlace().y + (height/2), player.getPlace().y + (height/2), player.getPlace().y,
+						player.getPlace().y + (height/2), player.getPlace().y + (height/2), player.getPlace().y + height,
+						player.getPlace().y + height};
+				g.fillPolygon(coordsX, coordsY, 7);
 			
 				
 			}
@@ -186,6 +217,8 @@ public class Gui extends JFrame {
 		    catch (Exception e) {
 		    	  System.out.println("error during loading image");
 		      }
+		    
+
 			
 		}
 	}
@@ -208,31 +241,7 @@ public class Gui extends JFrame {
 			return false;
 		}
 	}
-/*	
-	public void drawEnemies(ArrayList<Enemy> enemies){
-		gamePanel.enemies.clear();
-		gamePanel.enemies.addAll(enemies);
-		gamePanel.repaint();
-		
-	}
-	public void drawPlayers(ArrayList<Player> players){
-		gamePanel.players.clear();
-		gamePanel.players.addAll(players);
-		gamePanel.repaint();
-		
-	}
-	public void drawPlayerProjectiles(ArrayList<Projectile> plProjectiles){
-		gamePanel.playerBullets.clear();
-		gamePanel.playerBullets.addAll(plProjectiles);
-		gamePanel.repaint();
-		
-	}
-	public void drawEnemyProjectiles(ArrayList<Projectile> enProjectiles){
-		gamePanel.enemyBullets.clear();
-		gamePanel.enemyBullets.addAll(enProjectiles);
-		gamePanel.repaint();
-	}
-	*/
+
 	 public void draw(ArrayList<Enemy> enemies, ArrayList<Player> players, ArrayList<Projectile> plProjectiles, ArrayList<Projectile> enProjectiles){
 		 gamePanel.enemies = enemies;
 		 gamePanel.players = players;
@@ -240,5 +249,10 @@ public class Gui extends JFrame {
 		 gamePanel.playerBullets = plProjectiles;
 		 
 		 gamePanel.repaint();
+	 }
+	 
+	 public void setScore(int score){
+		 upperPanel.score = score;
+		 upperPanel.repaint();
 	 }
 }
