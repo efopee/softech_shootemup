@@ -8,9 +8,10 @@ public class FrameRateTask extends TimerTask {
 	}
 	@Override
 	public void run() {
+		ctrl.mutex.lock();
 		ctrl.step();
 		ctrl.assess();
 		ctrl.draw();
+		ctrl.mutex.unlock();
 	}
-
 }
