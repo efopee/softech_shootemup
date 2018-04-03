@@ -1,5 +1,7 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import displayed_objects.Enemy;
 import displayed_objects.Player;
@@ -21,29 +23,33 @@ public class Control {
 	protected ArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> plProjectiles;
 	protected ArrayList<Projectile> enProjectiles;
+	public ReentrantLock mutex;
 	private Gui gui;
+	private Point dimensions;
 	private Network net;
 	
 	public void setGui(Gui g){
 		gui = g;
+		dimensions = gui.getDimensions();
 	}
 	public void setNetwork(Network n){
 		net = n;
 	}
 	
-	public void playerButtons(BUTTONS whichButton, boolean isItPressed){
+	public void playerButtons(BUTTONS whichButton, boolean isItPressed){	
+		mutex.lock();
 		switch(whichButton){
 		case UP:
-			players.get(0).addToSpeed(0, isItPressed? -1:1);
+			players.get(0).upButton(isItPressed);
 			break;
 		case DOWN:
-			players.get(0).addToSpeed(0, isItPressed? 1:-1);
+			players.get(0).downButton(isItPressed);;
 			break;
 		case LEFT:
-			players.get(0).addToSpeed(isItPressed? -1:1, 0);
+			players.get(0).leftButton(isItPressed);;
 			break;
 		case RIGHT:
-			players.get(0).addToSpeed(isItPressed? 1:-1, 0);
+			players.get(0).rightButton(isItPressed);;
 			break;
 		case CNTRL:
 			playerShoots(0);
@@ -51,6 +57,7 @@ public class Control {
 		default:
 			break;
 		}
+		mutex.unlock();
 	}
 	
 	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
@@ -60,6 +67,8 @@ public class Control {
 		plProjectiles = new ArrayList<>();
 		enProjectiles = new ArrayList<>();
 		
+		mutex = new ReentrantLock();
+		
 		Player newPlayer = new Player(new Point(100,100), 10, 10);
 		players.add(newPlayer);
 		
@@ -67,31 +76,26 @@ public class Control {
 		
 	}
 	
-	void step(){
-		Point checkCoord;
-		
+	void step(){	
 		for (int i=0; i<players.size(); i++){
-			checkCoord = players.get(i).stepLook();
-			if(gui.outOfBounds(checkCoord)){}
-			else{
-				players.get(i).setLoc(checkCoord);
-			}
+			Point next = players.get(i).stepLook(dimensions);
+			players.get(i).setLoc(next);
 		}
 		
 		for (int i=0; i<enemies.size(); i++){
-			if(gui.outOfBounds(enemies.get(i).step())){
+			if(enemies.get(i).step(dimensions)){
 				enemies.remove(i);
 			}
 		}
 		
 		for (int i=0; i<plProjectiles.size(); i++){
-			if(gui.outOfBounds(plProjectiles.get(i).step())){
+			if(plProjectiles.get(i).step(dimensions)){
 				plProjectiles.remove(i);
 			}
 		}
 		
 		for (int i=0; i<enProjectiles.size(); i++){
-			if(gui.outOfBounds(enProjectiles.get(i).step())){
+			if(enProjectiles.get(i).step(dimensions)){
 				enProjectiles.remove(i);
 			}
 		}
@@ -143,7 +147,7 @@ public class Control {
 		}
 		else{
 			Point p = players.get(index).getPlace();
-			Projectile proj = new Projectile(p, -5.0, 1);
+			Projectile proj = new Projectile(p, -10.0, 1);
 			plProjectiles.add(proj);
 		}
 	}
@@ -154,7 +158,7 @@ public class Control {
 		}
 		else{
 			Point p = enemies.get(index).getPlace();
-			Projectile proj = new Projectile(p, 5.0, 1);
+			Projectile proj = new Projectile(p, 10.0, 1);
 			enProjectiles.add(proj);
 		}
 	}

@@ -17,12 +17,18 @@ abstract class Displayed{
 		speed[1] = y;
 	}
 	
-	public Point step(){
+	public boolean step(Point screenSize){
 		realCoord[0] += speed [0];
 		realCoord[1] += speed [1];
 		coordinates.setLocation(realCoord[0], realCoord[1]);
-		
-		return coordinates;
+		if
+		(
+			0 > coordinates.getX() ||
+			screenSize.getX() < coordinates.getX() ||
+			0 > coordinates.getY() ||
+			screenSize.getY() < coordinates.getY()
+		)return true;
+		else return false;
 	}
 	
 	public Point getPlace(){

@@ -34,6 +34,11 @@ public class Gui extends JFrame {
 		ctrl = c;
 	}
 	
+	public Point getDimensions(){
+		Point ret = new Point(displayWidth, displayHeight);
+		return ret;
+	}
+	
 	Gui(){
 		super("Shoot'em up!");
 		setSize(displayWidth, displayHeight + 50);
