@@ -27,7 +27,7 @@ abstract class Displayed{
 			screenSize.getX() < coordinates.getX() ||
 			0 > coordinates.getY() ||
 			screenSize.getY() < coordinates.getY()
-		)return true;
+		)return true; //outOfBounds
 		else return false;
 	}
 	

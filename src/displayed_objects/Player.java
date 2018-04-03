@@ -39,11 +39,6 @@ public class Player extends Killable {
 		}	
 	}
 	
-	public void addToSpeed(int dvx, int dvy){		
-		speed[0] += dvx*speedQ;
-		speed[1] += dvy*speedQ;
-	}
-	
 	public void upButton(boolean pressed){
 		up = pressed;
 		setSpeed();
@@ -61,27 +56,25 @@ public class Player extends Killable {
 		setSpeed();
 	}
 
-	public Point stepLook(Point screenSize){
+	public void stepLook(Point screenSize){
 		nextCoord[0] = (double)coordinates.getX() + speed[0];
 		nextCoord[1] = (double)coordinates.getY() + speed[1];
 		Point next = new Point((int)nextCoord[0], (int)nextCoord[1]);
 		if
 		(
-			0 > nextCoord[0] ||
-			screenSize.getX() < nextCoord[0]+50 ||
-			0 > nextCoord[1] ||
-			screenSize.getY() < nextCoord[1]+50
+			0 > next.getX() ||
+			screenSize.getX() < next.getX()
 		){
-			return coordinates;
+			next.x = coordinates.x;
 		}
-		else{
-			return next;
+		if
+		(
+			0 > next.getY() ||
+			screenSize.getY() < next.getY()
+		){
+			next.y = coordinates.y;
 		}
+		coordinates = next;
 	}
-	
-	public void setLoc(Point p){
-		coordinates = p;
-	}
-
 
 }

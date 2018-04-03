@@ -11,6 +11,7 @@ public class Main {
 		FrameRateTask frt = new FrameRateTask(c);
 		tim.scheduleAtFixedRate(frt, 0, 20);
 		
+		c.addEnemy(200);
 	}
 	
 }

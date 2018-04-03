@@ -1,6 +1,5 @@
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import displayed_objects.Enemy;
@@ -23,7 +22,9 @@ public class Control {
 	protected ArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> plProjectiles;
 	protected ArrayList<Projectile> enProjectiles;
+	private int score;
 	public ReentrantLock mutex;
+	private ReentrantLock shootLock;
 	private Gui gui;
 	private Point dimensions;
 	private Network net;
@@ -43,21 +44,45 @@ public class Control {
 			players.get(0).upButton(isItPressed);
 			break;
 		case DOWN:
-			players.get(0).downButton(isItPressed);;
+			players.get(0).downButton(isItPressed);
 			break;
 		case LEFT:
-			players.get(0).leftButton(isItPressed);;
+			players.get(0).leftButton(isItPressed);
 			break;
 		case RIGHT:
-			players.get(0).rightButton(isItPressed);;
+			players.get(0).rightButton(isItPressed);
 			break;
 		case CNTRL:
-			playerShoots(0);
+			shootButton(isItPressed);
 			break;
 		default:
 			break;
 		}
 		mutex.unlock();
+	}
+	
+	private void shootButton(boolean pressed){
+		if(pressed)
+			if(shootLock.isLocked()){
+				
+			}
+			else{
+				shootLock.lock();
+				Player player = players.get(0);
+				Point shootFrom = player.getPlace();
+				Projectile bullet = new Projectile(shootFrom, -10, 1);
+				plProjectiles.add(bullet);
+
+			}
+		else if(!pressed){
+			if(shootLock.isLocked()){
+				shootLock.unlock();
+			}
+			else{
+
+			}
+		}
+
 	}
 	
 	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
@@ -68,6 +93,7 @@ public class Control {
 		enProjectiles = new ArrayList<>();
 		
 		mutex = new ReentrantLock();
+		shootLock = new ReentrantLock();
 		
 		Player newPlayer = new Player(new Point(100,100), 10, 10);
 		players.add(newPlayer);
@@ -78,8 +104,7 @@ public class Control {
 	
 	void step(){	
 		for (int i=0; i<players.size(); i++){
-			Point next = players.get(i).stepLook(dimensions);
-			players.get(i).setLoc(next);
+			players.get(i).stepLook(dimensions);			
 		}
 		
 		for (int i=0; i<enemies.size(); i++){
@@ -111,6 +136,7 @@ public class Control {
 					int remainingHealth = enemies.get(i).hit(plProjectiles.get(j));
 					if(1 > remainingHealth){
 						hitEnemies.add(enemies.get(i));
+						score++;
 					}
 				}
 			}
@@ -137,29 +163,11 @@ public class Control {
 	
 	void draw(){
 		gui.draw(enemies, players, plProjectiles, enProjectiles);
+		gui.setScore(score);
 	}
 	
-	public void addEnemy(){}
-	
-	public void playerShoots(int index){
-		if(players.size() < index){
-			return;
-		}
-		else{
-			Point p = players.get(index).getPlace();
-			Projectile proj = new Projectile(p, -10.0, 1);
-			plProjectiles.add(proj);
-		}
-	}
-	
-	public void enemyShoots(int index){
-		if(enemies.size() < index){
-			return;
-		}
-		else{
-			Point p = enemies.get(index).getPlace();
-			Projectile proj = new Projectile(p, 10.0, 1);
-			enProjectiles.add(proj);
-		}
+	public void addEnemy(int width){
+		Enemy newEnemy = new Enemy(new Point(width, 0), 0, 1, 10, 1);
+		enemies.add(newEnemy);
 	}
 }

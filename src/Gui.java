@@ -83,7 +83,6 @@ public class Gui extends JFrame {
 				 * ***
 				 * 		isItPressed - true means the button has been pressed
 				 * 					  false means the button has been released
-				 * 					(CNTRL is only sensitive to keypress, no need to call on release)
 				 */
 				
 				switch (e.getKeyCode()) {
@@ -118,6 +117,9 @@ public class Gui extends JFrame {
 				break;
 				
 				case 40: ctrl.playerButtons(Control.BUTTONS.DOWN, false);
+				break;
+				
+				case 17: ctrl.playerButtons(Control.BUTTONS.CNTRL, false);
 				break;
 
 				default:
@@ -156,7 +158,7 @@ public class Gui extends JFrame {
 		     
 		    g.setColor(Color.black);
 		    
-		    g.drawString(String.format("Score: %07d", score), 490, 15); //
+		    g.drawString(String.format("Score: %06d", score), 490, 15); //
 		}
 	}
 	
@@ -225,25 +227,6 @@ public class Gui extends JFrame {
 		    
 
 			
-		}
-	}
-	
-	
-	
-	
-	
-
-
-	public boolean outOfBounds(Point p){
-		if(displayWidth < p.getX() ||
-					  0 > p.getX() ||
-		  displayHeight < p.getY() ||
-					  0 > p.getY())
-		{
-			return true;
-		}
-		else{
-			return false;
 		}
 	}
 
