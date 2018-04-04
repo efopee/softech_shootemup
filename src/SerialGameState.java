@@ -10,8 +10,7 @@ public class SerialGameState implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 384095649456148751L;
 	private ArrayList<Enemy> enemies;
 	private ArrayList<Player> players;
 	private ArrayList<Projectile> plProjectiles;

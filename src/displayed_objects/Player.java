@@ -3,6 +3,11 @@ import java.awt.Point;
 
 public class Player extends Killable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1858955017752315299L;
+
 	double[] nextCoord;
 	
 	private static double speedQ = 7;

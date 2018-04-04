@@ -1,8 +1,13 @@
 package displayed_objects;
 import java.awt.Point;
+import java.io.Serializable;
 
-abstract class Displayed{
+abstract class Displayed implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9019582287274912261L;
 	protected Point coordinates;
 	protected double[] speed;
 	protected double[] realCoord;

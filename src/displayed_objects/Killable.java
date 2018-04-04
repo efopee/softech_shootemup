@@ -2,7 +2,11 @@ package displayed_objects;
 
 import java.awt.Point;
 
-public class Killable extends Displayed {
+public class Killable extends Displayed{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2910201532306886364L;
 	protected int health;
 	private double size;
 	
