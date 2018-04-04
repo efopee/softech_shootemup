@@ -197,6 +197,7 @@ public class Gui extends JFrame {
 			for (Player player : players){
 				int width = 44; //osztható legyen 4-el
 				int height = 24; //osztható legyen 2-vel
+				int maxHP = 10;
 				int[] coordsX = {player.getPlace().x - (width / 2), player.getPlace().x - (width/4), player.getPlace().x,
 						player.getPlace().x + (width/4), player.getPlace().x + (width / 2), player.getPlace().x + (width / 2),
 						player.getPlace().x - (width / 2)};
@@ -204,7 +205,18 @@ public class Gui extends JFrame {
 						player.getPlace().y + (height/2), player.getPlace().y + (height/2), player.getPlace().y + height,
 						player.getPlace().y + height};
 				g.fillPolygon(coordsX, coordsY, 7);
-			
+				
+				
+				int HPwidth = (int)((player.getHealth() / (float)maxHP) * width);
+				int[] coordsHpX = {player.getPlace().x - (width / 2), player.getPlace().x + (HPwidth - width/2), player.getPlace().x + (HPwidth - width/2),
+						player.getPlace().x - (width / 2)};
+				int[] coordsHpY = {player.getPlace().y + height + 3, player.getPlace().y + height + 3, player.getPlace().y + height + 6,
+						player.getPlace().y + height + 6};
+				
+				g.setColor(new Color(44,224,113));
+				g.fillPolygon(coordsHpX, coordsHpY, 4);
+				System.out.println(player.getHealth());
+				
 				
 			}
 			
@@ -214,10 +226,10 @@ public class Gui extends JFrame {
 		        g2D = (Graphics2D) g;
 		        g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		        String fileName = "enemy1.PNG";
-		        Image img = getToolkit().getImage(fileName);;
+		        Image img = getToolkit().getImage(fileName);
 				
 		        for(Enemy enemy : enemies){
-			        g2D.drawImage(img, enemy.getPlace().x, enemy.getPlace().y, 50, 50, this);
+			        g2D.drawImage(img, enemy.getPlace().x-25, enemy.getPlace().y-25, 50, 50, this);
 				}
 		      }
 		    
