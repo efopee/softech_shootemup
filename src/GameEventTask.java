@@ -13,7 +13,7 @@ public class GameEventTask extends TimerTask {
 	public void run() {
 		ctrl.mutex.lock();
 		
-		if(0.1 > rand.nextDouble()){
+		if(0.05 > rand.nextDouble()){
 			ctrl.addEnemy(rand.nextInt(400), 0, 4*rand.nextDouble()+1, 1);
 		}
 		
