@@ -25,4 +25,8 @@ public class Killable extends Displayed {
 		health -= bullet.damage;
 		return health;
 	}
+	
+	public int getHealth(){
+		return health;
+	}
 }

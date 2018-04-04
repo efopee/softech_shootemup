@@ -166,8 +166,21 @@ public class Control {
 		gui.setScore(score);
 	}
 	
-	public void addEnemy(int width){
-		Enemy newEnemy = new Enemy(new Point(width, 0), 0, 1, 10, 1);
+	public void addEnemy(int width, double vx, double vy, int health){
+		Enemy newEnemy = new Enemy(new Point(width, 0), vx, vy, 30, health);
 		enemies.add(newEnemy);
+	}
+	
+	public void enemyShoots(double ran){
+		if(1>enemies.size() || ran>1 || ran<0){
+			
+		}
+		else{
+			int index = (int)ran*enemies.size();
+			Point enemyShootFrom = enemies.get(index).getPlace();
+			int enemyHealth = enemies.get(index).getHealth();
+			Projectile newEnemyProjectile = new Projectile(enemyShootFrom, 10, enemyHealth);
+			enProjectiles.add(newEnemyProjectile);
+		}
 	}
 }

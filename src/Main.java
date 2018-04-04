@@ -9,9 +9,9 @@ public class Main {
 		
 		Timer tim = new Timer();
 		FrameRateTask frt = new FrameRateTask(c);
+		GameEventTask gvt = new GameEventTask(c);
 		tim.scheduleAtFixedRate(frt, 0, 20);
-		
-		c.addEnemy(200);
+		tim.scheduleAtFixedRate(gvt, 0, 100);
 	}
 	
 }

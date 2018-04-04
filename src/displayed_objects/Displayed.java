@@ -32,7 +32,8 @@ abstract class Displayed{
 	}
 	
 	public Point getPlace(){
-		return coordinates;
+		Point ret = new Point(coordinates);
+		return ret;
 	}
 	
 }
