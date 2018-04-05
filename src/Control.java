@@ -95,10 +95,10 @@ public class Control {
 		mutex = new ReentrantLock();
 		shootLock = new ReentrantLock();
 		
-		Player newPlayer = new Player(new Point(100,100), 10, 10);
-		players.add(newPlayer);
-		
 		setGui(g);
+		
+		Player newPlayer = new Player(new Point(dimensions.x/2,dimensions.y-100), 20, 10);
+		players.add(newPlayer);
 		
 	}
 	
@@ -167,7 +167,7 @@ public class Control {
 	}
 	
 	void addEnemy(int width, double vx, double vy, int health){
-		Enemy newEnemy = new Enemy(new Point(width, 0), vx, vy, 30, health);
+		Enemy newEnemy = new Enemy(new Point(width, 0), vx, vy, 20, health);
 		enemies.add(newEnemy);
 	}
 	
@@ -182,5 +182,10 @@ public class Control {
 			Projectile newEnemyProjectile = new Projectile(enemyShootFrom, 10, enemyHealth);
 			enProjectiles.add(newEnemyProjectile);
 		}
+	}
+	
+	public int getScrWidth(){
+		int ret = dimensions.x;
+		return ret;
 	}
 }
