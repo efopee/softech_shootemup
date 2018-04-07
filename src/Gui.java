@@ -135,7 +135,7 @@ public class Gui extends JFrame {
 		});
 		
 		gamePanel.setFocusable(true);
-
+		
 		add(gamePanel);
 
 		gamePanel.repaint();
@@ -171,6 +171,8 @@ public class Gui extends JFrame {
 		private ArrayList<Projectile> enemyBullets = new ArrayList<Projectile>();
 		private ArrayList<Player> players = new ArrayList<Player>();
 		private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		private ArrayList<Bumm> bumms = new ArrayList<Bumm>();
+
 		
 	
 
@@ -192,6 +194,18 @@ public class Gui extends JFrame {
 				int[] bulletCoordsY = {bullet.getPlace().y, bullet.getPlace().y - 8, bullet.getPlace().y - 8};
 				g.fillPolygon(bulletCoordsX, bulletCoordsY, 3);
 
+			}
+			
+			for (Bumm bumm : bumms){
+				int[] bummCoorsX = {bumm.pos.x - 20, bumm.pos.x - 10, bumm.pos.x - 5, bumm.pos.x - 1, bumm.pos.x + 7, bumm.pos.x + 10, bumm.pos.x + 22, bumm.pos.x + 8, bumm.pos.x + 18, bumm.pos.x + 5, bumm.pos.x - 4, bumm.pos.x - 10, bumm.pos.x - 17, bumm.pos.x - 6};
+				int[] bummCoorsY = {bumm.pos.y - 0, bumm.pos.y - 2, bumm.pos.y - 15, bumm.pos.y - 4, bumm.pos.y - 17, bumm.pos.y - 5, bumm.pos.y - 18, bumm.pos.y - 3, bumm.pos.y + 20, bumm.pos.y + 3, bumm.pos.y + 16, bumm.pos.y + 2, bumm.pos.y + 19, bumm.pos.y + 6};
+				g.fillPolygon(bummCoorsX, bummCoorsY, 14);
+				
+				bumm.age -= 1;
+				
+				if(bumm.age < 0){
+					bumms.remove(bumm);
+				}
 			}
 			
 			for (Player player : players){
@@ -254,5 +268,19 @@ public class Gui extends JFrame {
 	 public void setScore(int score){
 		 upperPanel.score = score;
 		 upperPanel.repaint();
+	 }
+	 
+	 public void drawBumm(Point p){
+		 gamePanel.bumms.add(new Bumm(p));
+	 }
+	 
+	 private class Bumm{
+		 public Point pos;
+		 public int age;
+		 
+		 Bumm(Point position){
+			 pos = position;
+			 age = 20;
+		 }
 	 }
 }
