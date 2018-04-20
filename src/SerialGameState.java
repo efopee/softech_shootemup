@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class SerialGameState implements Serializable {
 	private ArrayList<Player> players;
 	private ArrayList<Projectile> plProjectiles;
 	private ArrayList<Projectile> enProjectiles;
+	private ArrayList<Point> detonations;
 	private int score;
 	
 	public SerialGameState
@@ -23,12 +25,14 @@ public class SerialGameState implements Serializable {
 		ArrayList<Player> pl,
 		ArrayList<Projectile> plPr,
 		ArrayList<Projectile> enPr,
+		ArrayList<Point> deto,
 		int scr
 	){
 		enemies = en;
 		players = pl;
 		plProjectiles = plPr;
 		enProjectiles = enPr;
+		detonations = deto;
 		score = scr;
 	} 
 

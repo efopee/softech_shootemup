@@ -1,4 +1,5 @@
 
-public class Network {
+public abstract class Network {
 
+	abstract void send();
 }

@@ -14,6 +14,8 @@ public class FrameRateTask extends TimerTask {
 		ctrl.assess();
 		ctrl.draw();
 		
+		//ctrl.sendGamestate();
+		
 		ctrl.mutex.unlock();
 	}
 }

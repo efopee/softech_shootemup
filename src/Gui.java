@@ -256,11 +256,22 @@ public class Gui extends JFrame {
 		}
 	}
 
-	 public void draw(ArrayList<Enemy> enemies, ArrayList<Player> players, ArrayList<Projectile> plProjectiles, ArrayList<Projectile> enProjectiles){
+	 public void draw(
+			 ArrayList<Enemy> enemies, 
+			 ArrayList<Player> players, 
+			 ArrayList<Projectile> plProjectiles, 
+			 ArrayList<Projectile> enProjectiles,
+			 ArrayList<Point> detonations
+			 )
+	 {
 		 gamePanel.enemies = enemies;
 		 gamePanel.players = players;
 		 gamePanel.enemyBullets = enProjectiles;
 		 gamePanel.playerBullets = plProjectiles;
+		 
+		 for(Point deto : detonations){
+			 gamePanel.bumms.add(new Bumm(deto));
+		 }
 		 
 		 gamePanel.repaint();
 	 }
@@ -280,7 +291,7 @@ public class Gui extends JFrame {
 		 
 		 Bumm(Point position){
 			 pos = position;
-			 age = 20;
+			 age = 5;
 		 }
 	 }
 }

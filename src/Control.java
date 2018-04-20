@@ -1,5 +1,6 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.concurrent.locks.ReentrantLock;
 
 import displayed_objects.Enemy;
@@ -22,12 +23,44 @@ public class Control {
 	protected ArrayList<Enemy> enemies;
 	protected ArrayList<Projectile> plProjectiles;
 	protected ArrayList<Projectile> enProjectiles;
+	protected ArrayList<Point> detonations;
 	private int score;
+	
+	private PLAYERMODE playmode;
+	private CONTROLMODE conmode;
+	
+	Timer tim;
+	FrameRateTask frt;
+	GameEventTask gvt;
+	
 	public ReentrantLock mutex;
 	private ReentrantLock shootLock;
 	private Gui gui;
 	private Point dimensions;
 	private Network net;
+	
+	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
+		playmode = playerNumber;
+		conmode = master;
+		setGui(g);
+
+		players = new ArrayList<>();
+		enemies = new ArrayList<>();
+		plProjectiles = new ArrayList<>();
+		enProjectiles = new ArrayList<>();
+		detonations = new ArrayList<>();
+		
+		tim = new Timer();
+		frt = new FrameRateTask(this);
+		gvt = new GameEventTask(this);
+		
+		mutex = new ReentrantLock();
+		shootLock = new ReentrantLock();
+		
+		Player newPlayer = new Player(new Point(dimensions.x/2,dimensions.y-100), 20, 10);
+		players.add(newPlayer);
+		
+	}
 	
 	private void setGui(Gui g){
 		gui = g;
@@ -36,6 +69,22 @@ public class Control {
 	public void setNetwork(Network n){
 		net = n;
 	}
+	
+	/*public void sendGamestate(){
+		if(Control.PLAYERMODE.SINGLE == playmode){
+			
+		}
+		if(Control.PLAYERMODE.MULTI == playmode){
+			SerialGameState gamestate = new SerialGameState(
+					enemies,
+					players,
+					plProjectiles,
+					enProjectiles,
+					detonations,
+					score);
+			net.send(gamestate);
+		}
+	}*/
 	
 	public void playerButtons(BUTTONS whichButton, boolean isItPressed){	
 		mutex.lock();
@@ -85,21 +134,9 @@ public class Control {
 
 	}
 	
-	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
-
-		players = new ArrayList<>();
-		enemies = new ArrayList<>();
-		plProjectiles = new ArrayList<>();
-		enProjectiles = new ArrayList<>();
-		
-		mutex = new ReentrantLock();
-		shootLock = new ReentrantLock();
-		
-		setGui(g);
-		
-		Player newPlayer = new Player(new Point(dimensions.x/2,dimensions.y-100), 20, 10);
-		players.add(newPlayer);
-		
+	public void startGame(){
+		tim.scheduleAtFixedRate(frt, 0, 20);
+		tim.scheduleAtFixedRate(gvt, 0, 100);
 	}
 	
 	void step(){	
@@ -127,12 +164,16 @@ public class Control {
 	}
 
 	void assess(){
+		detonations = new ArrayList<Point>();
+		
 		ArrayList<Enemy> hitEnemies = new ArrayList<Enemy>();
 		ArrayList<Projectile> hitPlProjectiles = new ArrayList<Projectile>();
 		for(int i=0; i<enemies.size(); i++){
 			for(int j=0; j<plProjectiles.size(); j++){
 				if(enemies.get(i).isHit(plProjectiles.get(j))){
 					hitPlProjectiles.add(plProjectiles.get(j));
+					detonations.add(plProjectiles.get(j).getPlace());
+					
 					int remainingHealth = enemies.get(i).hit(plProjectiles.get(j));
 					if(1 > remainingHealth){
 						hitEnemies.add(enemies.get(i));
@@ -150,6 +191,8 @@ public class Control {
 			for(int j=0; j<enProjectiles.size(); j++){
 				if(players.get(i).isHit(enProjectiles.get(j))){
 					hitEnProjectiles.add(enProjectiles.get(j));
+					detonations.add(enProjectiles.get(j).getPlace());
+					
 					int remainingHealth = players.get(i).hit(enProjectiles.get(j));
 					if(1 > remainingHealth){
 						hitEnemies.add(enemies.get(i));
@@ -162,7 +205,7 @@ public class Control {
 	}
 	
 	void draw(){
-		gui.draw(enemies, players, plProjectiles, enProjectiles);
+		gui.draw(enemies, players, plProjectiles, enProjectiles, detonations);
 		gui.setScore(score);
 	}
 	
