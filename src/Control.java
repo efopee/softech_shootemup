@@ -34,7 +34,6 @@ public class Control {
 	GameEventTask gvt;
 	
 	public ReentrantLock mutex;
-	private ReentrantLock shootLock;
 	private Gui gui;
 	private Point dimensions;
 	private Network net;
@@ -55,10 +54,18 @@ public class Control {
 		gvt = new GameEventTask(this);
 		
 		mutex = new ReentrantLock();
-		shootLock = new ReentrantLock();
 		
-		Player newPlayer = new Player(new Point(dimensions.x/2,dimensions.y-100), 20, 10);
-		players.add(newPlayer);
+		if(PLAYERMODE.SINGLE == playmode){
+			Player newPlayer = new Player(new Point(dimensions.x/2,dimensions.y-100), 20, 10);
+			players.add(newPlayer);
+			startGame();
+		}
+		else if(CONTROLMODE.MASTER == conmode){
+			net = new Server();
+		}
+		else if(CONTROLMODE.SLAVE == conmode){
+			net = new Client();
+		}
 		
 	}
 	
@@ -66,11 +73,40 @@ public class Control {
 		gui = g;
 		dimensions = gui.getDimensions();
 	}
-	public void setNetwork(Network n){
-		net = n;
+	
+	public SerialKeystroke recvedGamestate(SerialGameState gamestate){
+		if((PLAYERMODE.MULTI == playmode) && (CONTROLMODE.SLAVE == conmode)){
+			SerialKeystroke ret = new SerialKeystroke(
+					players.get(1).getUp(),
+					players.get(1).getDown(),
+					players.get(1).getLeft(),
+					players.get(1).getRight(),
+					players.get(1).getShoot()
+					);	
+
+			gui.draw(
+					gamestate.enemies,
+					gamestate.players, 
+					gamestate.plProjectiles,
+					gamestate.enProjectiles,
+					gamestate.detonations);
+			gui.setScore(gamestate.score);
+
+			return ret;
+		}
+		else return null;
 	}
 	
-	/*public void sendGamestate(){
+	public void recvedKeystroke(SerialKeystroke keystroke){
+		if((PLAYERMODE.MULTI == playmode) && (CONTROLMODE.MASTER == conmode)){
+			players.get(1).upButton(keystroke.up);
+			players.get(1).downButton(keystroke.down);
+			players.get(1).leftButton(keystroke.left);
+			players.get(1).rightButton(keystroke.right);
+		}
+	}
+	
+	public void sendGamestate(){
 		if(Control.PLAYERMODE.SINGLE == playmode){
 			
 		}
@@ -84,22 +120,29 @@ public class Control {
 					score);
 			net.send(gamestate);
 		}
-	}*/
+	}
 	
 	public void playerButtons(BUTTONS whichButton, boolean isItPressed){	
 		mutex.lock();
+		int whichPlayer;
+		if((PLAYERMODE.MULTI == playmode) && (CONTROLMODE.SLAVE == conmode)){
+			whichPlayer = 1;
+		}
+		else{
+			whichPlayer = 0;
+		}
 		switch(whichButton){
 		case UP:
-			players.get(0).upButton(isItPressed);
+			players.get(whichPlayer).upButton(isItPressed);
 			break;
 		case DOWN:
-			players.get(0).downButton(isItPressed);
+			players.get(whichPlayer).downButton(isItPressed);
 			break;
 		case LEFT:
-			players.get(0).leftButton(isItPressed);
+			players.get(whichPlayer).leftButton(isItPressed);
 			break;
 		case RIGHT:
-			players.get(0).rightButton(isItPressed);
+			players.get(whichPlayer).rightButton(isItPressed);
 			break;
 		case CNTRL:
 			shootButton(isItPressed);
@@ -111,27 +154,14 @@ public class Control {
 	}
 	
 	private void shootButton(boolean pressed){
-		if(pressed)
-			if(shootLock.isLocked()){
-				
-			}
-			else{
-				shootLock.lock();
-				Player player = players.get(0);
-				Point shootFrom = player.getPlace();
-				Projectile bullet = new Projectile(shootFrom, -10, 1);
-				plProjectiles.add(bullet);
-
-			}
-		else if(!pressed){
-			if(shootLock.isLocked()){
-				shootLock.unlock();
-			}
-			else{
-
-			}
+		int whichPlayer;
+		if((PLAYERMODE.MULTI == playmode) && (CONTROLMODE.SLAVE == conmode)){
+			whichPlayer = 1;
 		}
-
+		else{
+			whichPlayer = 0;
+		}
+		players.get(whichPlayer).shootButton(pressed);
 	}
 	
 	public void startGame(){
@@ -141,7 +171,12 @@ public class Control {
 	
 	void step(){	
 		for (int i=0; i<players.size(); i++){
-			players.get(i).stepLook(dimensions);			
+			players.get(i).stepLook(dimensions);
+			if(players.get(i).isShoot()){
+				Point shootFrom = players.get(i).getPlace();
+				Projectile bullet = new Projectile(shootFrom, -10, 1);
+				plProjectiles.add(bullet);
+			}
 		}
 		
 		for (int i=0; i<enemies.size(); i++){
