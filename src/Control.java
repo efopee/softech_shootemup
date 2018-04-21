@@ -67,8 +67,6 @@ public class Control {
 			players.add(slavePlayer);
 
 			if(CONTROLMODE.MASTER == conmode){
-
-
 				if (net != null){
 					net.disconnect();
 				}
@@ -119,6 +117,7 @@ public class Control {
 			players.get(1).downButton(keystroke.down);
 			players.get(1).leftButton(keystroke.left);
 			players.get(1).rightButton(keystroke.right);
+			players.get(1).shootButton(keystroke.shoot);
 		}
 	}
 	
@@ -126,7 +125,7 @@ public class Control {
 		if(PLAYERMODE.SINGLE == playmode){
 			
 		}
-		if(CONTROLMODE.MASTER == conmode){
+		else if(CONTROLMODE.MASTER == conmode){
 			SerialGameState gamestate = new SerialGameState(
 					enemies,
 					players,
@@ -161,23 +160,12 @@ public class Control {
 			players.get(whichPlayer).rightButton(isItPressed);
 			break;
 		case CNTRL:
-			shootButton(isItPressed);
+			players.get(whichPlayer).shootButton(isItPressed);
 			break;
 		default:
 			break;
 		}
 		mutex.unlock();
-	}
-	
-	private void shootButton(boolean pressed){
-		int whichPlayer;
-		if((PLAYERMODE.MULTI == playmode) && (CONTROLMODE.SLAVE == conmode)){
-			whichPlayer = 1;
-		}
-		else{
-			whichPlayer = 0;
-		}
-		players.get(whichPlayer).shootButton(pressed);
 	}
 	
 	public void startGame(){
