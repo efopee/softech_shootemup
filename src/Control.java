@@ -38,7 +38,7 @@ public class Control {
 	private Point dimensions;
 	private Network net;
 	
-	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g){
+	Control(PLAYERMODE playerNumber, CONTROLMODE master, Gui g, String ip){
 		playmode = playerNumber;
 		conmode = master;
 		setGui(g);
@@ -60,13 +60,29 @@ public class Control {
 			players.add(newPlayer);
 			startGame();
 		}
-		else if(CONTROLMODE.MASTER == conmode){
-			net = new Server();
+		else{
+			Player masterPlayer = new Player(new Point(dimensions.x/3,dimensions.y-100), 20, 10);
+			Player slavePlayer = new Player(new Point(2*(dimensions.x/3),dimensions.y-100), 20, 10);
+			players.add(masterPlayer);
+			players.add(slavePlayer);
+
+			if(CONTROLMODE.MASTER == conmode){
+
+
+				if (net != null){
+					net.disconnect();
+				}
+				net = new Server(this);
+				net.connect("localhost");
+			}
+			else if(CONTROLMODE.SLAVE == conmode){
+				if (net != null){
+					net.disconnect();
+				}
+				net = new Client(this);
+				net.connect(ip);		
+			}
 		}
-		else if(CONTROLMODE.SLAVE == conmode){
-			net = new Client();
-		}
-		
 	}
 	
 	private void setGui(Gui g){
@@ -107,10 +123,10 @@ public class Control {
 	}
 	
 	public void sendGamestate(){
-		if(Control.PLAYERMODE.SINGLE == playmode){
+		if(PLAYERMODE.SINGLE == playmode){
 			
 		}
-		if(Control.PLAYERMODE.MULTI == playmode){
+		if(CONTROLMODE.MASTER == conmode){
 			SerialGameState gamestate = new SerialGameState(
 					enemies,
 					players,
@@ -165,8 +181,8 @@ public class Control {
 	}
 	
 	public void startGame(){
-		tim.scheduleAtFixedRate(frt, 0, 20);
 		tim.scheduleAtFixedRate(gvt, 0, 100);
+		tim.scheduleAtFixedRate(frt, 0, 20);
 	}
 	
 	void step(){	
