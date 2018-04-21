@@ -5,7 +5,6 @@ public class Main {
 		Gui g = new Gui();
 		Control c = new Control(Control.PLAYERMODE.SINGLE, Control.CONTROLMODE.MASTER, g, null);
 		g.setControl(c);
-		c.startGame();
 	}
 	
 }
