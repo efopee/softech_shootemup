@@ -1,5 +1,6 @@
 package displayed_objects;
 import java.awt.Point;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Player extends Killable {
 	
@@ -16,10 +17,14 @@ public class Player extends Killable {
 	private boolean down = false;
 	private boolean left = false;
 	private boolean right = false;
+	private boolean shoot = false;
+	private ReentrantLock shootLock;
 
 	public Player(Point startingPoint, int size, int health){
 		super(startingPoint, 0, 0, size, health);
 		nextCoord = new double[2];
+		shootLock = new ReentrantLock();
+
 	}
 
 	protected void setSpeed(){
@@ -60,7 +65,64 @@ public class Player extends Killable {
 		right = pressed;
 		setSpeed();
 	}
+	public void shootButton(boolean pressed){
 
+		if(pressed){
+			if(shootLock.isLocked()){
+
+			}
+			else{
+				shootLock.lock();
+				shoot = pressed;
+			}
+		}
+		else if(!pressed){
+			if(shootLock.isLocked()){
+				shootLock.unlock();
+			}
+			else{
+
+			}
+		}
+	}
+	
+	public void setButtons(
+			boolean upPressed,
+			boolean downPressed,
+			boolean leftPressed,
+			boolean rightPressed
+			)
+	{
+		up = upPressed;
+		down = downPressed;
+		left = leftPressed;
+		right = rightPressed;
+		
+		setSpeed();
+	}
+	
+	public boolean getUp(){
+		return up;
+	}
+	public boolean getDown(){
+		return down;
+	}
+	public boolean getLeft(){
+		return left;
+	}
+	public boolean getRight(){
+		return right;
+	}
+	public boolean getShoot(){
+		return shoot;
+	}
+
+	public boolean isShoot(){
+		boolean ret = shoot;
+		shoot = false;
+		return ret;
+	}
+	
 	public void stepLook(Point screenSize){
 		nextCoord[0] = (double)coordinates.getX() + speed[0];
 		nextCoord[1] = (double)coordinates.getY() + speed[1];

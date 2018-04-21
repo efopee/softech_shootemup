@@ -12,12 +12,12 @@ public class SerialGameState implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 384095649456148751L;
-	private ArrayList<Enemy> enemies;
-	private ArrayList<Player> players;
-	private ArrayList<Projectile> plProjectiles;
-	private ArrayList<Projectile> enProjectiles;
-	private ArrayList<Point> detonations;
-	private int score;
+	public ArrayList<Enemy> enemies;
+	public ArrayList<Player> players;
+	public ArrayList<Projectile> plProjectiles;
+	public ArrayList<Projectile> enProjectiles;
+	public ArrayList<Point> detonations;
+	public int score;
 	
 	public SerialGameState
 	(
