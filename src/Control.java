@@ -1,7 +1,11 @@
 import java.awt.Point;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import displayed_objects.Enemy;
 import displayed_objects.Player;
@@ -169,6 +173,21 @@ public class Control {
 	}
 	
 	public void startGame(){
+		
+		//it will close all pop up windows.
+        Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JDialog) {
+                JDialog dialog = (JDialog) window;
+                if (dialog.getContentPane().getComponentCount() == 1
+                    && dialog.getContentPane().getComponent(0) instanceof JOptionPane){
+                    dialog.dispose();
+                }
+            }
+        
+
+        }
+        
 		tim.scheduleAtFixedRate(gvt, 0, 100);
 		tim.scheduleAtFixedRate(frt, 0, 20);
 	}

@@ -1,4 +1,6 @@
+
 import java.util.TimerTask;
+
 
 public class FrameRateTask extends TimerTask {
 	Control ctrl;
@@ -17,5 +19,7 @@ public class FrameRateTask extends TimerTask {
 		ctrl.sendGamestate();
 		
 		ctrl.mutex.unlock();
+		
+
 	}
 }
