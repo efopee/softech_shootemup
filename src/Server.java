@@ -45,17 +45,9 @@ public class Server extends Network {
 
 			try {
 				while (true) {
-					//receive
-					/*
-					 * TODO
-					 * I don't know what should happen here
-					 * but it should call
-					 * 
-					 * 		void recvedKeystroke(SerialKeystroke keystroke);
-					 * 
-					 * function of ctrl member object with the received SerialKeystroke object.
-					 *
-					 */
+					
+					SerialKeystroke received = (SerialKeystroke) in.readObject();
+					ctrl.recvedKeystroke(received);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());

@@ -24,21 +24,11 @@ public class Client extends Network {
 			//System.out.println("Waiting for gamestate...");
 			try {
 				while (true) {
-					//receive
-					/*
-					 * TODO
-					 * I don't know what should happen here
-					 * but it should call
-					 * 
-					 * 		SerialKeystroke recvedGamestate(SerialGameState gamestate);
-					 * 
-					 * function of ctrl member object, with the received SerialGamestate object.
-					 * The returned SerialKeystroke object shall be sent via the
-					 * 
-					 * 		send(SerialKeystroke keystroke);
-					 * 
-					 * function.
-					 */
+					
+					//System.out.println("Waiting for gamestate...");
+					SerialGameState received = (SerialGameState) in.readObject();
+					SerialKeystroke keystroke = ctrl.recvedGamestate(received);
+					send(keystroke);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
