@@ -26,7 +26,12 @@ public class Killable extends Displayed{
 	}
 	
 	public int hit (Projectile bullet){
-		health -= bullet.damage;
+		if(health > bullet.damage){
+			health -= bullet.damage;
+		}
+		else{
+			health = 0;
+		}
 		int ret = health;
 		return ret;
 	}

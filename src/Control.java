@@ -131,11 +131,11 @@ public class Control {
 		}
 		else if(CONTROLMODE.MASTER == conmode){
 			SerialGameState gamestate = new SerialGameState(
-					new ArrayList<>(enemies),
-					new ArrayList<>(players),
-					new ArrayList<>(plProjectiles),
-					new ArrayList<>(enProjectiles),
-					new ArrayList<>(detonations),
+					enemies,
+					players,
+					plProjectiles,
+					enProjectiles,
+					detonations,
 					score);
 			net.send(gamestate);
 		}
@@ -195,7 +195,7 @@ public class Control {
 	void step(){	
 		for (int i=0; i<players.size(); i++){
 			players.get(i).stepLook(dimensions);
-			if(players.get(i).isShoot()){
+			if((players.get(i).getHealth() > 0) && players.get(i).isShoot()){
 				Point shootFrom = players.get(i).getPlace();
 				Projectile bullet = new Projectile(shootFrom, -10, 1);
 				plProjectiles.add(bullet);
@@ -243,7 +243,6 @@ public class Control {
 			plProjectiles.removeAll(hitPlProjectiles);
 		}
 		
-		ArrayList<Player> hitPlayers = new ArrayList<Player>();
 		ArrayList<Projectile> hitEnProjectiles = new ArrayList<Projectile>();
 		for(int i=0; i<players.size(); i++){
 			for(int j=0; j<enProjectiles.size(); j++){
@@ -251,13 +250,9 @@ public class Control {
 					hitEnProjectiles.add(enProjectiles.get(j));
 					detonations.add(enProjectiles.get(j).getPlace());
 					
-					int remainingHealth = players.get(i).hit(enProjectiles.get(j));
-					if(1 > remainingHealth){
-						hitEnemies.add(enemies.get(i));
-					}
+					players.get(i).hit(enProjectiles.get(j));
 				}
 			}
-			players.removeAll(hitPlayers);
 			enProjectiles.removeAll(hitEnProjectiles);
 		}
 	}
