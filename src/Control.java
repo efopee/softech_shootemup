@@ -131,11 +131,11 @@ public class Control {
 		}
 		else if(CONTROLMODE.MASTER == conmode){
 			SerialGameState gamestate = new SerialGameState(
-					enemies,
-					players,
-					plProjectiles,
-					enProjectiles,
-					detonations,
+					new ArrayList<>(enemies),
+					new ArrayList<>(players),
+					new ArrayList<>(plProjectiles),
+					new ArrayList<>(enProjectiles),
+					new ArrayList<>(detonations),
 					score);
 			net.send(gamestate);
 		}

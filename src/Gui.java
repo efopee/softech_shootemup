@@ -370,6 +370,19 @@ public class Gui extends JFrame {
 			 gamePanel.enemyBullets = enProjectiles;
 			 gamePanel.playerBullets = plProjectiles;
 			 
+			 /*
+			 gamePanel.enemies.clear();
+			 gamePanel.enemies.addAll(enemies);
+			 
+			 gamePanel.players.clear();
+			 gamePanel.players.addAll(players);
+			 
+			 gamePanel.enemyBullets.clear();
+			 gamePanel.enemyBullets.addAll(enProjectiles);
+			 
+			 gamePanel.playerBullets.clear();
+			 gamePanel.playerBullets.addAll(plProjectiles);
+			 */
 			 for(Point deto : detonations){
 				 gamePanel.bumms.add(new Bumm(deto));
 			 }

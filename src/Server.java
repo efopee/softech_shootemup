@@ -95,6 +95,7 @@ public class Server extends Network {
 			return;
 		//System.out.println();
 		try {
+			out.reset();
 			out.writeObject(gamestate);
 			out.flush();
 		} catch (IOException ex) {

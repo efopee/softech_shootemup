@@ -79,6 +79,7 @@ public class Player extends Killable {
 		else if(!pressed){
 			if(shootLock.isLocked()){
 				shootLock.unlock();
+				shoot = pressed;
 			}
 			else{
 
