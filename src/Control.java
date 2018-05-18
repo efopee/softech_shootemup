@@ -246,7 +246,8 @@ public class Control {
 		ArrayList<Projectile> hitEnProjectiles = new ArrayList<Projectile>();
 		for(int i=0; i<players.size(); i++){
 			for(int j=0; j<enProjectiles.size(); j++){
-				if(players.get(i).isHit(enProjectiles.get(j))){
+				if(players.get(i).isHit(enProjectiles.get(j)) &&
+						(0 < (players.get(i)).getHealth())){
 					hitEnProjectiles.add(enProjectiles.get(j));
 					detonations.add(enProjectiles.get(j).getPlace());
 					
