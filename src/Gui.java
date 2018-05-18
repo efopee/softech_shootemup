@@ -38,7 +38,7 @@ public class Gui extends JFrame {
 	private int displayHeight = 500;
 	private Control ctrl;
 	private Gui g = this;
-	
+	private JMenu menu;
 	public void setControl(Control c){
 		ctrl = c;
 	}
@@ -53,11 +53,9 @@ public class Gui extends JFrame {
 		setSize(displayWidth, displayHeight + 50);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
-		
 		JMenuBar menuBar = new JMenuBar();
 		
-		JMenu menu = new JMenu("Start");
-		
+		menu = new JMenu("Start");
 		JMenuItem menuItem = new JMenuItem("Start Server");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
@@ -71,20 +69,10 @@ public class Gui extends JFrame {
 				} catch (UnknownHostException e1) {
 					System.out.println("Error during getting IP");
 				}
-				Object[] options = {"Cancel"};
-				int n = JOptionPane.showOptionDialog(
-					    upperPanel,
-					    "Waiting for a cilent on IP " + IP,
-					    "Waiting",
-					    JOptionPane.YES_NO_OPTION,
-					    JOptionPane.QUESTION_MESSAGE,
-					    null,
-					    options,
-					    options[0]);
+
+				JOptionPane.showMessageDialog(
+					    upperPanel, "Waiting for a cilent on IP " + IP);
 				
-				if(n < 0){ //closed by the program - connected
-					
-				}
 			}
 		});
 		menu.add(menuItem);
@@ -131,7 +119,7 @@ public class Gui extends JFrame {
 		
 		menuBar.add(menu);
 		setJMenuBar(menuBar);
-		
+
 		upperPanel = new UpperPanel();
 		upperPanel.setBounds(0, 0, displayWidth, 20);
 		upperPanel.score = 0;
@@ -280,11 +268,11 @@ public class Gui extends JFrame {
 				}
 				
 				for (Bumm bumm : bumms){
-					int[] bummCoorsX = {bumm.pos.x - 20, bumm.pos.x - 10, bumm.pos.x - 5, bumm.pos.x - 1, bumm.pos.x + 7, bumm.pos.x + 10, bumm.pos.x + 22, bumm.pos.x + 8, bumm.pos.x + 18, bumm.pos.x + 5, bumm.pos.x - 4, bumm.pos.x - 10, bumm.pos.x - 17, bumm.pos.x - 6};
-					int[] bummCoorsY = {bumm.pos.y - 0, bumm.pos.y - 2, bumm.pos.y - 15, bumm.pos.y - 4, bumm.pos.y - 17, bumm.pos.y - 5, bumm.pos.y - 18, bumm.pos.y - 3, bumm.pos.y + 20, bumm.pos.y + 3, bumm.pos.y + 16, bumm.pos.y + 2, bumm.pos.y + 19, bumm.pos.y + 6};
-					g.fillPolygon(bummCoorsX, bummCoorsY, 14);
+					g.setColor(new Color(255,51,0));
+					int rad = (int)(bumm.age * 4);
+					g.fillOval(bumm.pos.x - rad, bumm.pos.y - rad, rad*2, rad*2);
 					
-					bumm.age -= 1;
+					bumm.age -= 0.5;
 					
 					if(bumm.age < 0){
 						bumms.remove(bumm);
@@ -292,29 +280,32 @@ public class Gui extends JFrame {
 				}
 				int i = 0;
 				for (Player player : players){
-					int width = 44; //osztható legyen 4-el
-					int height = 24; //osztható legyen 2-vel
-					int maxHP = 10;
-					int[] coordsX = {player.getPlace().x - (width / 2), player.getPlace().x - (width/4), player.getPlace().x,
-							player.getPlace().x + (width/4), player.getPlace().x + (width / 2), player.getPlace().x + (width / 2),
-							player.getPlace().x - (width / 2)};
-					int[] coordsY = {player.getPlace().y + (height/2), player.getPlace().y + (height/2), player.getPlace().y,
-							player.getPlace().y + (height/2), player.getPlace().y + (height/2), player.getPlace().y + height,
-							player.getPlace().y + height};
 					
-					g.setColor(playerColors[i]);
-					g.fillPolygon(coordsX, coordsY, 7);
-					
-					
-					int HPwidth = (int)((player.getHealth() / (float)maxHP) * width);
-					int[] coordsHpX = {player.getPlace().x - (width / 2), player.getPlace().x + (HPwidth - width/2), player.getPlace().x + (HPwidth - width/2),
-							player.getPlace().x - (width / 2)};
-					int[] coordsHpY = {player.getPlace().y + height + 3, player.getPlace().y + height + 3, player.getPlace().y + height + 6,
-							player.getPlace().y + height + 6};
-					
-					g.setColor(new Color(102, 255, 51));
-					g.fillPolygon(coordsHpX, coordsHpY, 4);
-					i++;
+					if(player.getHealth() > 0){
+						int width = 44; //osztható legyen 4-el
+						int height = 24; //osztható legyen 2-vel
+						int maxHP = 10;
+						int[] coordsX = {player.getPlace().x - (width / 2), player.getPlace().x - (width/4), player.getPlace().x,
+								player.getPlace().x + (width/4), player.getPlace().x + (width / 2), player.getPlace().x + (width / 2),
+								player.getPlace().x - (width / 2)};
+						int[] coordsY = {player.getPlace().y + (height/2), player.getPlace().y + (height/2), player.getPlace().y,
+								player.getPlace().y + (height/2), player.getPlace().y + (height/2), player.getPlace().y + height,
+								player.getPlace().y + height};
+						
+						g.setColor(playerColors[i]);
+						g.fillPolygon(coordsX, coordsY, 7);
+						
+						
+						int HPwidth = (int)((player.getHealth() / (float)maxHP) * width);
+						int[] coordsHpX = {player.getPlace().x - (width / 2), player.getPlace().x + (HPwidth - width/2), player.getPlace().x + (HPwidth - width/2),
+								player.getPlace().x - (width / 2)};
+						int[] coordsHpY = {player.getPlace().y + height + 3, player.getPlace().y + height + 3, player.getPlace().y + height + 6,
+								player.getPlace().y + height + 6};
+						
+						g.setColor(new Color(102, 255, 51));
+						g.fillPolygon(coordsHpX, coordsHpY, 4);
+						i++;
+					}
 					
 					
 				}
@@ -370,8 +361,8 @@ public class Gui extends JFrame {
 			 gamePanel.enemyBullets = enProjectiles;
 			 gamePanel.playerBullets = plProjectiles;
 			 
-			 for(Point deto : detonations){
-				 gamePanel.bumms.add(new Bumm(deto));
+			 for(int i = 0; i < detonations.size();i++){
+				 gamePanel.bumms.add(new Bumm(detonations.get(i)));
 			 }
 		 }
 		 
@@ -388,9 +379,17 @@ public class Gui extends JFrame {
 		 gamePanel.bumms.add(new Bumm(p));
 	 }
 	 
+	 public void  disableStart(){
+		 menu.removeAll();
+	 }
+	 
+	 public void showError(String msg){
+		 JOptionPane.showMessageDialog(upperPanel, msg);
+	 }
+	 
 	 private class Bumm{
 		 public Point pos;
-		 public int age;
+		 public float age;
 		 
 		 Bumm(Point position){
 			 pos = position;

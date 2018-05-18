@@ -33,6 +33,7 @@ public class Client extends Network {
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 				System.err.println("Server disconnected!");
+				ctrl.showError(new String("Server disconnected!"));
 			} finally {
 				disconnect();
 			}
@@ -78,7 +79,6 @@ public class Client extends Network {
 	void send(SerialKeystroke keystroke) {
 		if (out == null)
 			return;
-		System.out.println();
 		try {
 			out.writeObject(keystroke);
 			out.flush();

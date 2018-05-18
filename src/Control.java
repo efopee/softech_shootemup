@@ -85,6 +85,8 @@ public class Control {
 				net.connect(ip);		
 			}
 		}
+		
+		g.disableStart(); //Prevent user to start another game
 	}
 	
 	private void setGui(Gui g){
@@ -284,5 +286,9 @@ public class Control {
 	public int getScrWidth(){
 		int ret = dimensions.x;
 		return ret;
+	}
+	
+	public void showError(String msg){
+		gui.showError(msg);
 	}
 }
