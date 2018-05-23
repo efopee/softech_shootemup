@@ -304,8 +304,9 @@ public class Gui extends JFrame {
 						
 						g.setColor(new Color(102, 255, 51));
 						g.fillPolygon(coordsHpX, coordsHpY, 4);
-						i++;
+						
 					}
+					i++;
 					
 					
 				}
