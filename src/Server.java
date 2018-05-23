@@ -52,6 +52,7 @@ public class Server extends Network {
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 				System.err.println("Client disconnected!");
+				ctrl.showError(new String("Client disconnected!"));
 			} finally {
 				disconnect();
 			}
