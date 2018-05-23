@@ -267,15 +267,15 @@ public class Gui extends JFrame {
 	
 				}
 				
-				for (Bumm bumm : bumms){
+				for (int i = 0; i < bumms.size(); i++){
 					g.setColor(new Color(255,51,0));
-					int rad = (int)(bumm.age * 4);
-					g.fillOval(bumm.pos.x - rad, bumm.pos.y - rad, rad*2, rad*2);
+					int rad = (int)(bumms.get(i).age * 4);
+					g.fillOval(bumms.get(i).pos.x - rad, bumms.get(i).pos.y - rad, rad*2, rad*2);
 					
-					bumm.age -= 0.5;
+					bumms.get(i).age -= 0.5;
 					
-					if(bumm.age < 0){
-						bumms.remove(bumm);
+					if(bumms.get(i).age < 0){
+						bumms.remove(bumms.get(i));
 					}
 				}
 				int i = 0;
